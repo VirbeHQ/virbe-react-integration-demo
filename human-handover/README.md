@@ -8,13 +8,15 @@ You can switch between Display, Control and Admin screen - for best experience, 
 ```bash
 npm install
 ```
-1. Create and configure Web Widget Profile in Virbe Dashboard eg. https://dashboard-virbe.virbe.app (<your-dashboard-url>)
+2. Create and configure Web Widget Profile in Virbe Dashboard eg. https://dashboard-virbe.virbe.app (<your-dashboard-url>)
 ![Web Widget Profile Deployment](./docs/dashboard.png)
-1. Create `.env` file eg. copy .env.sample and fill in ProfileId, ProfileSecret and Dashboard URL (from step 1)
-1. Start the application
+3. Create `.env` file eg. copy .env.sample and fill in ProfileId, ProfileSecret and Dashboard URL (from step 1)
+4. Start the application
 ```bash
 npm run dev
 ```
+
+## Testing
 1. Open 3 browser windows:
    - Touch Control: http://localhost:6120/touch
    - Admin: http://localhost:6120/admin
@@ -23,3 +25,6 @@ npm run dev
      - Requires that you create and Virbe Kiosk Profile  
      - Download and install [Virbe Metahuman Kiosk app](https://docs.virbe.ai/digital-signage/kiosk-apps/metahuman-kiosk)
 
+![Browser Windows](./docs/test.png)
+
+2. Switch to Human Handover to simulate a video handover on the Control and Display screens
