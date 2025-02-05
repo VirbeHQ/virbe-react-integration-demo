@@ -15,3 +15,11 @@ npm install
 ```bash
 npm run dev
 ```
+1. Open 3 browser windows:
+   - Touch Control: http://localhost:6120/touch
+   - Admin: http://localhost:6120/admin
+   - Display (Web Avatar): http://localhost:6120/display-web-widget
+   - Display (Kiosk Pixel Stream): http://localhost:6120/display-kiosk-streaming
+     - Requires that you create and Virbe Kiosk Profile  
+     - Download and install [Virbe Metahuman Kiosk app](https://docs.virbe.ai/digital-signage/kiosk-apps/metahuman-kiosk)
+
