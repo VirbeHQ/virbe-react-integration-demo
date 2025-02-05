@@ -1,0 +1,29 @@
+services:
+  caddy:
+    container_name: caddy
+    image: caddy:2.8.4-alpine
+    restart: unless-stopped
+    ports:
+      - "443:443"
+    volumes:
+      - ./Caddyfile.localhost:/etc/caddy/Caddyfile
+      - ./certs:/certs
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - signaling_server
+
+  signaling_server:
+    container_name: signaling-server
+    image: virbe/signaling-server:latest
+#    image: pixelstreamingunofficial/pixel-streaming-signalling-server:5.3
+    restart: always
+    # Expose only to the internal network; Caddy will connect internally
+    ports:
+      - "80:80"
+      - "8888:8888"
+      - "8889:8889"
+
+volumes:
+  caddy_data:
+  caddy_config:

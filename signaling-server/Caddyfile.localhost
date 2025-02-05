@@ -1,0 +1,14 @@
+virbe-signaling.local, localhost {
+    log {
+        output stderr
+        level DEBUG
+        format console
+    }
+    tls /certs/virbe-signaling.local.crt /certs/virbe-signaling.local.key
+
+    # Routes for paths on the default ports (80/443)
+    # reverse_proxy /signaling signaling_server:8888
+    # reverse_proxy /sfu signaling_server:8889
+    # All other paths fall back to signaling_server:80
+    reverse_proxy signaling_server:80
+}

@@ -16,6 +16,8 @@ npm install
 npm run dev
 ```
 
+
+
 ## Testing
 1. Open 3 browser windows:
    - Touch Control: http://localhost:6120/touch
@@ -24,7 +26,15 @@ npm run dev
    - Display (Kiosk Pixel Stream): http://localhost:6120/display-kiosk-streaming
      - Requires that you create and Virbe Kiosk Profile  
      - Download and install [Virbe Metahuman Kiosk app](https://docs.virbe.ai/digital-signage/kiosk-apps/metahuman-kiosk)
+     - Launch Virbe Signaling server using Docker Compose (check below for instructions)
+     - Alias `virbe-signaling.local` the signaling server to `127.0.0.1` in your hosts file eg. `/etc/hosts` file
 
 ![Browser Windows](./docs/test.png)
 
 2. Switch to Human Handover to simulate a video handover on the Control and Display screens
+
+## Lanching Virbe Signaling Server
+```bash
+cd ../signaling-server
+docker compose up -d
+```
