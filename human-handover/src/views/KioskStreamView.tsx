@@ -26,31 +26,18 @@ export function KioskStreamView() {
     []
   );
 
-  const onWebRtcSessionStatusChanged = useCallback(
-    (_: VirbePluginMethods, status: WebRtcStatus) => {
-      const { connected } = status;
-      setHasWebRtcSession(connected);
-    },
-    []
-  );
-
   useEffect(() => {
     if (humanHandover) {
       ref.current?.stopConversation();
     } else {
       if (ref.current && controllerApiStatus && hasWebRtcSession) {
+        console.log("Starting conversation using controller status", controllerApiStatus);
         // Connect to conversation using controller api status
         startConversationUsingControllerStatus(ref.current, controllerApiStatus);
       }
     }
   }, [hasWebRtcSession, humanHandover, controllerApiStatus]);
 
-  const onStreamAccepted = useCallback((plugin: VirbePluginMethods, _: string) => {
-    // This is moment where communication socket with kiosk is active
-    if (controllerApiStatus) {
-      startConversationUsingControllerStatus(plugin, controllerApiStatus);
-    }
-  }, [controllerApiStatus]);
 
   return (
     <>
@@ -67,8 +54,16 @@ export function KioskStreamView() {
               setHasWebRtcSession(false);
               // Connection will be initialized by Touch module and passed through localStorage
             }}
-            onStreamAccepted={onStreamAccepted}
-            onWebRtcSessionStatusChanged={onWebRtcSessionStatusChanged}
+            onStreamAccepted={(plugin: VirbePluginMethods, _: string) => {
+              // This is moment where communication socket with kiosk is active
+              if (controllerApiStatus) {
+                startConversationUsingControllerStatus(plugin, controllerApiStatus);
+              }
+            }}
+            onWebRtcSessionStatusChanged={(_: VirbePluginMethods, status: WebRtcStatus) => {
+              const { connected } = status;
+              setHasWebRtcSession(connected);
+            }}
             className="z-0"
           />
         )}

@@ -15,13 +15,10 @@ export function AvatarlessView() {
   const [, setControllerApiState] = useLocalStorage<ApiStatus | null>(LocalStorageItem.ControllerApiStatus, null);
 
   useEffect(() => {
-    if (!isInitialized) {
-      return;
-    }
-
     if (humanHandover) {
       ref.current?.stopConversation();
-    } else {
+      setIsInitialized(false);
+    } else if (isInitialized) {
       ref.current?.startNewConversation();
     }
   }, [humanHandover, isInitialized]);
@@ -61,6 +58,8 @@ export function AvatarlessView() {
                 } else {
                   plugin.mute();
                 }
+              } else {
+                setControllerApiState(null)
               }
             }}
             type="web-component-avatarless"
