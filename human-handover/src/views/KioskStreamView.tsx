@@ -28,6 +28,7 @@ export function KioskStreamView() {
 
   useEffect(() => {
     if (humanHandover) {
+      ref.current?.interruptSpeech();
       ref.current?.stopConversation();
     } else {
       if (ref.current && controllerApiStatus && hasWebRtcSession) {

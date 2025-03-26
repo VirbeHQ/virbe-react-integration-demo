@@ -38,3 +38,12 @@ npm run dev
 cd ../signaling-server
 docker compose up -d
 ```
+
+## Launching Virbe Metahuman Kiosk in Pixel Streaming mode
+1. Download and install [Virbe Metahuman Kiosk app](https://docs.virbe.ai/digital-signage/kiosk-apps/metahuman-kiosk)
+2. Launch the Kiosk app using the following command, connecting it to your signaling server
+```bash
+./kiosk.exe -AudioMixer -PixelStreamingURL=ws://127.0.0.1:8888 -RenderOffscreen SettingsUrl="<your-kiosk-profile-configuration-url>"
+# Make sure to use quotes "" around your configuration URL
+```
+3. Test connection using the provided Pixel Streaming integration http://localhost:6120/display-kiosk-streaming 
