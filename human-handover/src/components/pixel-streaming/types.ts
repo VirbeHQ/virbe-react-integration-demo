@@ -56,6 +56,28 @@ export interface VirbePluginMethods {
   subscribeToEvent: (event: VirbePluginEvent, listener: EventListener) => Subscription;
 }
 
+export interface VirbePixelStreamingExposedSettings {
+  AutoConnect?: boolean;
+  UseMic?: boolean;
+  MatchViewportRes?: boolean;
+  DefaultResolutionWidth?: number;
+  DefaultResolutionHeight?: number;
+  StartVideoMuted?: boolean;
+  AutoPlayVideo?: boolean;
+  TouchInput?: boolean;
+  FakeMouseWithTouches?: boolean;
+  MouseInput?: boolean;
+  KeyboardInput?: boolean;
+  SuppressBrowserKeys?: boolean;
+  PreferredCodec?: 'VP8' | 'H264' | 'VP9';
+  WebRTCFPS?: number;
+  WebRTCMinBitrate?: number;
+  WebRTCMaxBitrate?: number;
+  ControlsQuality?: boolean;
+  MinQP?: number;
+  MaxQP?: number;
+}
+
 /**
  * Plugin attributes and global types for the plugin element to provide type-safety
  */
@@ -65,6 +87,7 @@ export interface VirbePluginProps {
   streamerId: string;
   mode?: string;
   position?: string;
+  settings?: string;
 }
 
 // it provides type-safety for the <virbe-plugin> element

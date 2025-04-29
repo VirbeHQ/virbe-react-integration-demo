@@ -1,12 +1,13 @@
-import { useLoadScript } from './useLoadScript';
-import { getHost } from "@/utils/host.ts";
-import { cn } from "@/utils/cn.ts";
-import { ApiStatus, VirbePluginMethods, WebRtcStatus } from "./types.ts";
-import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import {useLoadScript} from './useLoadScript';
+import {getHost} from "@/utils/host.ts";
+import {cn} from "@/utils/cn.ts";
+import {ApiStatus, VirbePixelStreamingExposedSettings, VirbePluginMethods, WebRtcStatus} from "./types.ts";
+import {forwardRef, memo, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState} from 'react';
 
 export interface VirbePixelStreamingWrapperProps {
   ss: string;
   streamerId: string;
+  settings?: VirbePixelStreamingExposedSettings;
   domain?: string;
   onInitialized?: (ref: VirbePluginMethods) => void;
   onStreamAccepted?: (ref: VirbePluginMethods, streamerId: string) => void;
@@ -17,8 +18,8 @@ export interface VirbePixelStreamingWrapperProps {
 
 const VirbePixelStreamingWrapper = forwardRef<VirbePluginMethods, VirbePixelStreamingWrapperProps>((props, ref) => {
   const pluginRef = useRef<VirbePluginMethods | null>(null);
-  const { ss, streamerId, domain = getHost(), className } = props;
-  const { isScriptLoaded } = useLoadScript(domain);
+  const {ss, streamerId, domain = getHost(), className, settings} = props;
+  const {isScriptLoaded} = useLoadScript(domain);
   const [isMounted, setIsMounted] = useState(false);
 
   const methods: VirbePluginMethods = useMemo(
@@ -62,7 +63,8 @@ const VirbePixelStreamingWrapper = forwardRef<VirbePluginMethods, VirbePixelStre
       subscribeToEvent: (event, listener) => {
         return (
           pluginRef.current?.subscribeToEvent(event, listener) ?? {
-            unsubscribe: () => {},
+            unsubscribe: () => {
+            },
           }
         );
       },
@@ -122,10 +124,10 @@ const VirbePixelStreamingWrapper = forwardRef<VirbePluginMethods, VirbePixelStre
 
   return (
     <div className={cn('w-100dvw h-100dvh absolute size-full min-w-[400px]', className)}>
-      <virbe-pixel-streaming ref={setRef} ss={ss} streamerId={streamerId} mode="embedded" />
+      <virbe-pixel-streaming ref={setRef} ss={ss} streamerId={streamerId} settings={JSON.stringify(settings)} mode="embedded"/>
     </div>
   );
 });
 
 const VirbePixelStreamingWrapperMemo = memo(VirbePixelStreamingWrapper);
-export { VirbePixelStreamingWrapperMemo as VirbePixelStreamingWrapper };
+export {VirbePixelStreamingWrapperMemo as VirbePixelStreamingWrapper};

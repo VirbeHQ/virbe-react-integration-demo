@@ -1,10 +1,10 @@
 import environment from "../environment.ts";
-import { useLocalStorage } from "@uidotdev/usehooks";
-import { ApiStatus } from "../components/plugin/types";
-import { useCallback, useEffect, useRef } from "react";
-import { VirbePixelStreamingWrapper } from "@/components/pixel-streaming/VirbePixelStreamingWrapper.tsx";
-import { VirbePluginMethods, WebRtcStatus } from "@/components/pixel-streaming/types.ts";
-import { LocalStorageItem } from "@/utils/localStorage.ts";
+import {useLocalStorage} from "@uidotdev/usehooks";
+import {ApiStatus} from "../components/plugin/types";
+import {useCallback, useEffect, useRef} from "react";
+import {VirbePixelStreamingWrapper} from "@/components/pixel-streaming/VirbePixelStreamingWrapper.tsx";
+import {VirbePluginMethods, WebRtcStatus} from "@/components/pixel-streaming/types.ts";
+import {LocalStorageItem} from "@/utils/localStorage.ts";
 
 export function KioskStreamView() {
   const ref = useRef<VirbePluginMethods>(null);
@@ -15,16 +15,14 @@ export function KioskStreamView() {
   const startConversationUsingControllerStatus = useCallback(
     (plugin: VirbePluginMethods, apiStatus: ApiStatus) => {
       if (controllerApiStatus) {
-        const { conversation } = apiStatus;
+        const {conversation} = apiStatus;
         if (conversation) {
           console.log("Starting conversation", conversation);
           plugin.startConversation(conversation.conversationId, conversation.endUserId);
           plugin.unmute();
         }
       }
-    },
-    []
-  );
+    }, []);
 
   useEffect(() => {
     if (humanHandover) {
@@ -40,6 +38,13 @@ export function KioskStreamView() {
   }, [hasWebRtcSession, humanHandover, controllerApiStatus]);
 
 
+  const onStreamAccepted = useCallback((plugin: VirbePluginMethods, _: string) => {
+    // This is moment where communication socket with kiosk is active
+    if (controllerApiStatus) {
+      startConversationUsingControllerStatus(plugin, controllerApiStatus);
+    }
+  }, []);
+
   return (
     <>
       <div className="dark min-h-screen bg-background">
@@ -50,19 +55,20 @@ export function KioskStreamView() {
             ref={ref}
             ss={environment.ss}
             streamerId={environment.streamerId}
+            settings={{
+              UseMic: false,
+              MatchViewportRes: false,
+              // DefaultResolutionWidth: 320,
+              // DefaultResolutionHeight: 640,
+            }}
             domain={environment.dashboardUrl}
             onInitialized={(_) => {
               setHasWebRtcSession(false);
               // Connection will be initialized by Touch module and passed through localStorage
             }}
-            onStreamAccepted={(plugin: VirbePluginMethods, _: string) => {
-              // This is moment where communication socket with kiosk is active
-              if (controllerApiStatus) {
-                startConversationUsingControllerStatus(plugin, controllerApiStatus);
-              }
-            }}
+            onStreamAccepted={onStreamAccepted}
             onWebRtcSessionStatusChanged={(_: VirbePluginMethods, status: WebRtcStatus) => {
-              const { connected } = status;
+              const {connected} = status;
               setHasWebRtcSession(connected);
             }}
             className="z-0"
