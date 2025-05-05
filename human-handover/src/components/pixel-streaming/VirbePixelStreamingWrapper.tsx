@@ -1,7 +1,7 @@
 import {useLoadScript} from './useLoadScript';
 import {getHost} from "@/utils/host.ts";
 import {cn} from "@/utils/cn.ts";
-import {ApiStatus, VirbePixelStreamingExposedSettings, VirbePluginMethods, WebRtcStatus} from "./types.ts";
+import {ApiStatus, SettingKeys, VirbePixelStreamingExposedSettings, VirbePluginMethods, WebRtcStatus} from "./types.ts";
 import {forwardRef, memo, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState} from 'react';
 
 export interface VirbePixelStreamingWrapperProps {
@@ -24,6 +24,27 @@ const VirbePixelStreamingWrapper = forwardRef<VirbePluginMethods, VirbePixelStre
 
   const methods: VirbePluginMethods = useMemo(
     () => ({
+      reconnectStream: () => {
+        pluginRef.current?.reconnectStream();
+      },
+      playStream: () => {
+        pluginRef.current?.playStream();
+      },
+      changeStreamResolution: (width: number, height: number) => {
+        pluginRef.current?.changeStreamResolution(width, height);
+      },
+      changeStreamSetting: (key: SettingKeys, value: unknown) => {
+        pluginRef.current?.changeStreamSetting(key, value);
+      },
+      disconnectStream: () => {
+        pluginRef.current?.disconnectStream();
+      },
+      muteMicrophone: () => {
+        pluginRef.current?.muteMicrophone();
+      },
+      unmuteMicrophone: () => {
+        pluginRef.current?.unmuteMicrophone();
+      },
       startNewConversation: (endUserId?: string) => {
         pluginRef.current?.startNewConversation(endUserId);
       },

@@ -47,6 +47,13 @@ export interface VirbePluginMethods {
   hideWidget: () => void;
   mute: () => void;
   unmute: () => void;
+  reconnectStream: () => void;
+  playStream: () => void;
+  changeStreamResolution: (width: number, height: number) => void;
+  changeStreamSetting: (key: SettingKeys, value: unknown) => void;
+  disconnectStream: () => void;
+  muteMicrophone: () => void;
+  unmuteMicrophone: () => void;
   startNewConversation: (endUserId?: string) => void;
   startConversation: (conversationId: string, endUserId?: string) => void;
   stopConversation: () => void;
@@ -70,6 +77,7 @@ export interface VirbePixelStreamingExposedSettings {
   KeyboardInput?: boolean;
   SuppressBrowserKeys?: boolean;
   PreferredCodec?: 'VP8' | 'H264' | 'VP9';
+  // Changing WebRTC settings requires a reconnection of the stream
   WebRTCFPS?: number;
   WebRTCMinBitrate?: number;
   WebRTCMaxBitrate?: number;
@@ -77,6 +85,8 @@ export interface VirbePixelStreamingExposedSettings {
   MinQP?: number;
   MaxQP?: number;
 }
+
+export type SettingKeys = keyof VirbePixelStreamingExposedSettings;
 
 /**
  * Plugin attributes and global types for the plugin element to provide type-safety
